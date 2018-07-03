@@ -1,0 +1,29 @@
+Signal()
+
+Synopsis:
+#include <signal.h>
+typedef void (*sighandler_t) (int);
+sighandler_t signal (int signum, sighandler_t handler);
+
+Description:
+The behavior of signal() varies across UNIX version.
+
+If the signal signum is delivered to the process, then:
+
+-If the disposition is set ti SIG_IGN, then the signal is ignored
+-If the disposition is set to SIG_DFL, then the default action associated with the signal.
+-If the disposition is set to a function, then first either the disposition is reset to SIG_DFL, or the signal is blocked.
+
+The signal SIGKILL and SIGSTOP cannot be caught or ignored
+
+
+Return value:
+signal() returns the previous of the signal handler, or SIG_ERR on error. In the event of an error, errno is set to indicate the cause.
+
+ERRORS:
+EINVAL signam is invalid.
+
+Notes:
+The effect of signal() in a multithreaded process are unspecifed.
+
+Integer division by zero has

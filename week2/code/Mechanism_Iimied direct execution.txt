@@ -1,0 +1,74 @@
+Mechanism: Limited Direct Execution
+
+I. Limited Direct Execution:
+
+OS:                                         Program
+Create entry for process list
+Allocate memory for Program
+Load program into memory
+Set up stack with argc/ argv
+Clear registers
+Execute call main()
+                                            Run main()
+                                            Execute return from main
+Free memory of process
+Remove from process list
+
+6.2 Problem #1: Restricted Operations:
+Direct excecution is fast. The program runs natively on the hardware CPU. But running on the CPU introduces a probblem: What if the process wishes to perform some kind of restricted operation, such as issuing an I/O request to a disk, or gaining access to more system resources such as CPU or memory.
+
+Answer: Introduce a new mode, called user mode; code that runs in a user mode is restricted in what it can do. A process can't issue I/O request, doing so would result in the processor raising an exception.
+In contrast to user mode is kernel mode. In this mode, a process can do whatever it likes, including raising an exception and executing restricted instruction.
+
+OS allow user programs to perform a system call. To execute a system call, a program must execute a special trap instruction. This instruction simultaneously jumps into the kernel and raises the privelege level to kernel mode. Once in the kernel, the system can perform the privelege instruction. When finished, the OS calls a special return-from-trap instruction, returns into the calling user program while simultaneously return to user mode 
+
+The hardware must be carefil when executing a trap, to make sure to save enough of the caller's registers in order to be able to return correctly when do return-from-trap instruction.
+
+Example: On x86, the processor will push the program counter, flags, and a few other registers onto kernel stacl, the RFTI will pop these values off the stack and resume the execution of the user-mode program.
+
+The kernel must know where to jump ( which code to run inside the OS) because the the calling process cannot specify the address to jump to. The kernel does so by setting up a trap table at boot time. When the machine boots up, the OS tells the hardware what code to run when certain exception events occur (I/O). The OS informs the hardware of the locations of these trap handlers.
+
+
+OS @ boot                               hardware
+initialze trap table
+                                        remember address of ...
+                                            syscal handler
+
+OS @ run                                hardware                            Program
+(kernel mode)
+Create entry for process list
+Allocate memory for program
+Load program into memory
+Setup user stack with argv
+Fill kernal stack with reg/PC
+return-from trap
+
+                                        restore regs from kernel stack
+                                        move to user mode
+                                        jump to main
+
+                                                                        Run main()
+                                                                        ...
+                                                                        Call system call
+                                                                        trap into OS
+
+                                        save regs to kernel stack
+                                        move to kernel mode
+                                        jump to trap handler
+
+Handle trap
+Do work of syscal
+return from trap
+
+                                        restore regs from kernel stack
+                                        move to user mode
+                                        jump to PC after trap
+
+                                                                            ...
+                                                                            return from main
+                                                                            trap (via exit())
+
+Free memory of process
+Remove from process list
+
+To specify the exact system call, a system-call number number is u

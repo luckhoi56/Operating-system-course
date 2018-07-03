@@ -1,0 +1,58 @@
+Operating system principles, processes, execution, and state
+
+1. What is a process:
+-A type of interpreter
+-an executing instance of a program
+-a virtual private computer
+-a process is an object:
+    -characterized by its properties (state)
+    -characterized by its orientation
+    -not all OS objects are processes
+
+2. What is a state:
+- a mode or condition of being
+-all persisten objects have state:
+- contents of state depends on object
+
+3. Examples of OS Object states:
+-scheduling priority of a process
+-current pointer to a file
+- completion conditon of an I/o Operation
+- list of memory pages allocated to a process
+- os objects'state is mostly managed by the OS:
+    -it must ask the OS to access or alter state of OS objects
+
+4. Process address spaces:
+-each process has some memory addresses reserved for its private use
+-the set of addresses is called address spaces
+-a process address space is made up of all memory locations that the process can address
+-modern OS pretend that every process address space can include all of it memory
+
+Program vs process address space:
+Program has:
+-ELF header
+-section 1 header (compiled code)
+-section 2 header (initialized data values)
+-section 3 header (symbol tables)
+
+Process has:
+-shared code
+-private data
+-private stack
+
+1. Process Address Space layout:
+all required memory elements for a process must be put in address spac
+different types of memory elemtns have different requirements:
+- code is not writable but must be executable
+-stack are readable and writeable but not executable
+each opearating system has some strategy for where to put these memory segments
+
+1.Layout of Unix processes in Memory:
+-code segments are statically sized
+-data segments grows up
+-stack segment grows down
+
+1. Address space: code segments
+- code must be included into memory:
+    A code segment must
+

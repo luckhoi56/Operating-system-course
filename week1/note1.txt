@@ -1,0 +1,229 @@
+ 06/26/2018
+ CS 111: Lec1
+
+I. Introduction:
+ -Ram: read or write binary words
+
+ -CPU: assembly instruction
+
+-Disk drive: read or write block of data
+
+OS: 
+-help to perform complex operation while hiding the complexity
+
+OS wisdom:
+-view services as object and operations
+
+Interface vs Implementation:
+-an implementation is not a spec
+- many compliant implementations are possible
+- inappropriate dependencies cause problems
+- inferece spec is a contract (not the implementation)
+
+*Modularity and functional capsulation:
+-complexity hiding and appropriate abstration
+*separate policy from mechanism:
+-policy determines what can be done
+-mechanism implements basic operation to do it
+-mechanis should not dictate or limit policies (don't use one mechanism for just one policy)
+-policy must be changeable without chaning mechanisms
+
+
+*Parallelism and asynchrony are powerful and vital:
+-dangerous when use carelessly
+
+Definition of operating system:
+*it manages hardware for programs:
+-allocates hardware and manages its use
+-enforces controlled sharing (and privacy)
+-oversees exectuion and handles problem
+*it abstract the hardware:
+-makes it easier to use and improve SW portability
+
+....
+
+
+
+
+
+What does an OS look like?
+
+*a set of management and abstraction services:
+-invisible, they happen behind the scenes
+
+*Application see object and their services:
+-CPU supports data-types and operation:
+	*bytes, short, string, long, float,...
+	*add, subtract, shift, compare,....
+-an operating system is the same, but at a higher level:
+	*file, processes, threads, devices.
+	*destroy, read, write, and signal
+
+	...
+
+
+Where does the OS fit in?
+CPU can do 2 instruction:
+-privilege instruction set
+-standard instruction set :
+	*application software //application binary interface-> system services/ Libraries (string, random, encryption, graphics) :
+		1. //system call interface-> operating system //privilege instruction -> 
+		2 . //standard instruction set -> flow control operation
+
+What is specicial in the OS?
+*It is always in control of the hardware
+*it alone has complete access to the hardware
+*it meditates application's access to the hardware
+*it is trusted
+
+
+II. Instruction set architectures (ISA):
+* THe set of instructuins support by a computer
+* there are many different ISAs (all incompatible)
+*generally comes in as family
+
+
+Privileged vs. General Instructions:
+*most modern ISAs divide the instruction set into privileged vs general
+* any code running on the machine can run general instruction
+
+
+
+Platforms:
+*ISA does not completely define a computer:
+	-interrupt controller, DMA
+	-memory management, I/o
+	-bios
+	-multi-processor
+
+Portability to Multiple ISAs:
+*genral frameworks are hardware independent:
+	-files system, protocols, processes
+*hw assumptions isolated to specific modules:
+	-context switching, I/O, memory management
+*careful use of types:
+	-word length, sign  byte order, alignment
+
+Question: how can an OS distribute to all these different ISAs and platforms?
+
+
+
+5. Binary Distribution Model:
+*Binary is the derivative of source:
+	-The OS is written in source
+	-source distribution must be compiled
+	-a binary distribution is ready to run
+
+*OS usually distribute in binary
+*one binary distribution per ISA
+*binary mdel for platform support 
+
+
+6. Binary configuration model:
+*eliminate manual/static configuration:
+	-enable one distribution to serve all users
+*automatic hardware discovery:
+	-self-identifying buses: PCI, USB, EISA,...
+	-automatically find and load required drivers
+*automatic resouce allocation
+
+
+7. Interface Stability:
+-To eliminate the need of bug fixes, system break down from OS update.
+-We need well-defined application interfaces:
+	1. Application programming interfaces (APIs)
+	2. Application binary interfaces (ABIs)
+
+8. What functionality is in the OS?
+*functions must be in the OS if it:
+	-require the use of privileged instructions
+	-requires the manipulation of OS data structures
+	-must maintain security, trust, or resource integrity
+*functions should be in libraries if :
+	-are a service commonly needed by applications
+	-do not have to implemented by the OS
+Note: some things may be performed faster if done in the OS.
+
+9. The OS and abstraction
+*OS can offer abstract version of resources
+*OS implements the abstract resources using the physical resources:
+	-processes are implemented using the CPU and RAM
+	-files are implemented using disks
+
+10. Why abstract resources?
+*The abstractions are simpler and easier to use for programmer and users::
+	-easier to use than the original resources:
+		*don't need to keep track of the disk interrupts.
+	-encapsulate complexity:
+		*does not need to know how other code is doing.
+	-eliminate behavior that is irrelavant to user:
+		*hide the erase cycle of the flash memory
+	-create more convenient behaviro:
+		*make it seems like the network entirely for the user
+
+11. Generalizing abstractions:
+-variations of machines' hardware and software
+-different types appear to be the same:
+	*applications can deal with single common class
+*involves a common unifying model:
+	-such as format type: pdf
+	-SCSCI standard for disks ...
+*involves a federation framework:
+	-per sub-type implementaions of standard functions
+
+Ex:
+	printer drivers make printers look the same
+	browser plug-ins to handle multiple users
+
+
+12. Serially reusable resources:
+*used by multiple clients, but only one at a time:
+	-time multiplexing
+*require access control to ensure exclusively use
+*require graceful transistions from one user to the next
+
+
+13. What is a graceful transistion?
+*a switch that totally hides the fact that the resource used to belong to someone else:
+	-don't allow the second user to access the resource until the first user is finished with it:
+		*no incomplete operations that finish after the transition
+
+...
+
+
+14. Partitionable resources;:
+*divided into disjoint pieces for multiple clients:
+	-spatial multiplexing
+*needs access control to ensure:
+	-containment: you cannot access resources outside of your operation
+	-privacy: nobody else can access resources in your partition
+Ex: ram and hardrive.
+
+
+15. Shareable resources:
+*useable by multiple concurrent clients:
+	-clients don't wait for access to resource
+	-clients don't own a particular subset of the resource
+*may ....
+
+In this case, we don't need graceful tranistions, reasons:
+-the shareable resouce usually does not change state
+- don't have to clean up memory
+
+
+16. general OS trends:
+From:
+-control the use of the hardware
+To:
+
+
+17. Why have OS converged?
+-expensive to build and maintain
+-cannot support all the apps the user want
+-require other parties to cooperate
+
+*operatng system provide service via abstractions
+*operating system interact direclly with the hardware.
+
+
+
